@@ -233,6 +233,12 @@ img{max-width:100%;display:block}
   .feature-row,.feature-row-reverse{flex-direction:column}
   .feature-text{text-align:center}
   .feature-text p{margin-left:auto;margin-right:auto}
+  /* flex-basis:320px/300px (set for desktop's side-by-side row, as a
+     preferred column width) gets reinterpreted as a *minimum height*
+     once the row switches to column direction here, padding out dozens
+     of px of empty space before the phone image. Let both size to their
+     actual content instead. */
+  .feature-text,.feature-media{flex:0 1 auto}
   .footer-inner{flex-direction:column;text-align:center}
   /* Only the three full-color icons land on the plate on mobile; the
      muted ones stay out of the hero entirely rather than crowd the ring. */
