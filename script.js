@@ -76,15 +76,20 @@
       const wrapTop = wrap.getBoundingClientRect().top;
       const availH = Math.max(140, stickyHeight - wrapTop - pillClearance);
       const widthScale = clamp(window.innerWidth * 0.92, 240, 400) / 300;
-      const heightScale = availH / 442; // 442 = local offset from stage top to the ring stroke's true bottom edge
+      const heightScale = availH / 300; // 300 = the ring's own diameter, once the dead space above it is trimmed below
       scale = clamp(Math.min(widthScale, heightScale), 200 / 300, 400 / 300);
+      // The ring sits at local y=300 (with ~142 units of empty headroom
+      // above it, left over from desktop's icon spread), not at the
+      // stage's own top - shift the whole canvas up so the ring itself
+      // starts right where the hero text ends, instead of leaving a gap.
+      stage.style.transform = `translateY(${-142 * scale}px) scale(${scale})`;
     } else {
       stage.style.transformOrigin = 'center center';
       const availW = Math.min(window.innerWidth - 28, 1000);
       const availH = Math.max(200, wrap.clientHeight - 76);
       scale = Math.min(1, availW / 920, availH / 560);
+      stage.style.transform = `scale(${scale})`;
     }
-    stage.style.transform = `scale(${scale})`;
 
     const arc = $('ringArc');
     const fill = clamp(0.05 + smooth(seg(p, 0.03, 0.78)) * 0.95, 0, 1);
