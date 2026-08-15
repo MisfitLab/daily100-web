@@ -22,26 +22,25 @@
   const PASSIVE_ICONS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple'];
 
   // Mobile: the ring is scaled up to be the focal point, which pushes most
-  // of the desktop-authored icon layout off-canvas. Rather than leave those
-  // icons stranded off-screen forever, every icon becomes "active" on
-  // mobile - entering from far off-screen and landing in a ring around the
-  // plate, staggered as the fill progresses.
-  const ALL_ICON_IDS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple', 'grid', 'leaf', 'fish'];
+  // of the desktop-authored icon layout off-canvas. The five muted icons
+  // are hidden entirely on mobile (see the max-width:720px media query) -
+  // only the three full-color ones land on the plate, spread evenly around
+  // it (120° apart) instead of reusing their clustered desktop targets.
+  const MOBILE_ACTIVE_IDS = ['grid', 'leaf', 'fish'];
   const MOBILE_TARGET = {};
   const MOBILE_START = {};
   const MOBILE_FLIGHT_WINDOW = {};
   (function buildMobileLayout() {
     const landingRadius = 112; // matches the white plate disc's own radius
     const startRadius = 900; // clears the viewport at any angle, including near-vertical ones on tall phones
-    const startAngleDeg = -100;
-    const stepDeg = 360 / ALL_ICON_IDS.length;
-    ALL_ICON_IDS.forEach((id, i) => {
+    const startAngleDeg = -90; // straight up, then 120° apart
+    const stepDeg = 360 / MOBILE_ACTIVE_IDS.length;
+    MOBILE_ACTIVE_IDS.forEach((id, i) => {
       const rad = (startAngleDeg + i * stepDeg) * Math.PI / 180;
       const cos = Math.cos(rad), sin = Math.sin(rad);
       MOBILE_TARGET[id] = [PLATE_CX + landingRadius * cos, PLATE_CY + landingRadius * sin];
       MOBILE_START[id] = [PLATE_CX + startRadius * cos, PLATE_CY + startRadius * sin];
-      const winStart = 0.03 + i * 0.065;
-      MOBILE_FLIGHT_WINDOW[id] = [winStart, winStart + 0.24];
+      MOBILE_FLIGHT_WINDOW[id] = FLIGHT_WINDOW[id];
     });
   })();
 
@@ -89,7 +88,7 @@
     if (percentValue) percentValue.textContent = String(Math.round(fill * 100));
 
     const endFade = seg(p, 0.78, 0.88);
-    const activeIds = isMobile ? ALL_ICON_IDS : Object.keys(TARGET);
+    const activeIds = isMobile ? MOBILE_ACTIVE_IDS : Object.keys(TARGET);
 
     for (const id of activeIds) {
       const el = $('icon-' + id);
