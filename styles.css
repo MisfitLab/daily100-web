@@ -96,7 +96,7 @@ img{max-width:100%;display:block}
 
 .anim-stagewrap{
   flex:1 1 auto;min-height:0;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:flex-start;
   position:relative;
 }
 .anim-stage{
@@ -134,10 +134,11 @@ img{max-width:100%;display:block}
 }
 
 .scroll-cue{
-  position:absolute;left:50%;bottom:32px;transform:translateX(-50%);
+  position:fixed;left:50%;bottom:60px;transform:translateX(-50%);
+  z-index:20;pointer-events:none;
   display:inline-flex;align-items:center;gap:10px;
   border:1px solid var(--ink);border-radius:100px;
-  padding:10px 16px;
+  padding:10px 16px;background:var(--soft-1);
   color:var(--ink);font-weight:600;font-size:13px;
   letter-spacing:0.025em;
   animation:cueBounce 1.9s ease-in-out infinite;

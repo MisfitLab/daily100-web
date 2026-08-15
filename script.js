@@ -77,8 +77,8 @@
 
     const head = $('heroHead');
     if (head) {
-      head.style.transform = `translateY(${-p * 46}px)`;
-      head.style.opacity = String(1 - seg(p, 0.7, 1) * 0.35);
+      head.style.transform = `translateY(${-p * 180}px)`;
+      head.style.opacity = String(1 - seg(p, 0.55, 1) * 0.15);
     }
     const cue = $('scrollCue');
     if (cue) cue.style.opacity = String((1 - seg(p, 0.02, 0.14)) * 0.9);
