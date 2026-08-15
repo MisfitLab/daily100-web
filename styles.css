@@ -174,7 +174,9 @@ img{max-width:100%;display:block}
 /* Testimonial */
 .testimonial{
   padding:clamp(96px,13vw,180px) 34px;
-  background:radial-gradient(120% 160% at 20% 0%,#2a2722 0%,var(--ink) 55%,#141210 100%);
+  background:
+    linear-gradient(rgba(20,18,16,0.62),rgba(20,18,16,0.62)),
+    url('assets/testimonial-bg.jpg') center/cover no-repeat;
   text-align:center;
 }
 .testimonial-inner{max-width:820px;margin:0 auto}
