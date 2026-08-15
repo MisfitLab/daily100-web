@@ -75,9 +75,9 @@
       const pillClearance = 86; // pill sits 30px lower than before, so less clearance is needed
       const wrapTop = wrap.getBoundingClientRect().top;
       const availH = Math.max(140, stickyHeight - wrapTop - pillClearance);
-      const widthScale = clamp(window.innerWidth * 0.92, 240, 400) / 300;
+      const widthScale = clamp(window.innerWidth * 0.78, 220, 320) / 300;
       const heightScale = availH / 300; // 300 = the ring's own diameter, once the dead space above it is trimmed below
-      scale = clamp(Math.min(widthScale, heightScale), 200 / 300, 400 / 300);
+      scale = clamp(Math.min(widthScale, heightScale), 200 / 300, 320 / 300);
       // The ring sits at local y=300 (with ~142 units of empty headroom
       // above it, left over from desktop's icon spread), not at the
       // stage's own top - shift the whole canvas up so the ring itself
