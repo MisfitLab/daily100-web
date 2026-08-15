@@ -67,9 +67,14 @@ img{max-width:100%;display:block}
 .logo-footer em{color:var(--accent-light)}
 
 /* Hero / animation */
-.anim-track{position:relative;height:300vh}
+/* lvh = height with mobile browser chrome (address bar etc) collapsed;
+   falls back to vh where unsupported. Without it, the hero sizes itself
+   against whatever window.innerHeight is at first paint - typically the
+   smaller, chrome-visible viewport on iOS Safari - then visibly grows a
+   moment later as the chrome auto-collapses. */
+.anim-track{position:relative;height:300vh;height:300lvh}
 .anim-sticky{
-  position:sticky;top:0;height:100vh;overflow:hidden;
+  position:sticky;top:0;height:100vh;height:100lvh;overflow:hidden;
   display:flex;flex-direction:column;
 }
 .hero-head{
@@ -143,7 +148,7 @@ img{max-width:100%;display:block}
 }
 
 .scroll-cue{
-  position:fixed;left:50%;bottom:60px;transform:translateX(-50%);
+  position:fixed;left:50%;bottom:30px;transform:translateX(-50%);
   z-index:20;pointer-events:none;
   display:inline-flex;align-items:center;gap:10px;
   white-space:nowrap;

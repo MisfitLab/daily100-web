@@ -46,6 +46,7 @@
 
   const stage = $('animStage');
   const track = $('anim-track');
+  const sticky = track.querySelector('.anim-sticky');
   if (!stage || !track) return;
 
   const apply = (p) => {
@@ -66,9 +67,14 @@
       // screen position instead, and reserve room for the fixed scroll-cue
       // pill near the bottom of the viewport.
       stage.style.transformOrigin = 'top center';
-      const pillClearance = 116;
+      // .anim-sticky is sized with the lvh unit (see styles.css), so its
+      // measured height already reflects mobile browser chrome collapsed -
+      // stable from first paint, unlike window.innerHeight which starts
+      // smaller on iOS Safari and grows once the address bar auto-hides.
+      const stickyHeight = sticky ? sticky.getBoundingClientRect().height : window.innerHeight;
+      const pillClearance = 86; // pill sits 30px lower than before, so less clearance is needed
       const wrapTop = wrap.getBoundingClientRect().top;
-      const availH = Math.max(140, window.innerHeight - wrapTop - pillClearance);
+      const availH = Math.max(140, stickyHeight - wrapTop - pillClearance);
       const widthScale = clamp(window.innerWidth * 0.92, 240, 400) / 300;
       const heightScale = availH / 442; // 442 = local offset from stage top to the ring stroke's true bottom edge
       scale = clamp(Math.min(widthScale, heightScale), 200 / 300, 400 / 300);
