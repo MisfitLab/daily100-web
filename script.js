@@ -81,7 +81,7 @@
       head.style.opacity = String(1 - seg(p, 0.55, 1) * 0.15);
     }
     const cue = $('scrollCue');
-    if (cue) cue.style.opacity = String((1 - seg(p, 0.02, 0.14)) * 0.9);
+    if (cue) cue.style.opacity = String((1 - seg(p, 0.92, 1)) * 0.9);
   };
 
   let ticking = false;
