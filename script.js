@@ -31,7 +31,7 @@
   const MOBILE_START = {};
   const MOBILE_FLIGHT_WINDOW = {};
   (function buildMobileLayout() {
-    const landingRadius = 112; // matches the white plate disc's own radius
+    const landingRadius = 88; // close to the percent number but clear of it
     const startRadius = 900; // clears the viewport at any angle, including near-vertical ones on tall phones
     const startAngleDeg = -90; // straight up, then 120° apart
     const stepDeg = 360 / MOBILE_ACTIVE_IDS.length;
@@ -66,12 +66,12 @@
       // screen position instead, and reserve room for the fixed scroll-cue
       // pill near the bottom of the viewport.
       stage.style.transformOrigin = 'top center';
-      const pillClearance = 130;
+      const pillClearance = 116;
       const wrapTop = wrap.getBoundingClientRect().top;
       const availH = Math.max(140, window.innerHeight - wrapTop - pillClearance);
-      const widthScale = clamp(window.innerWidth * 0.8, 220, 340) / 300;
-      const heightScale = availH / 450; // 450 = local offset from stage top to the plate's bottom edge
-      scale = clamp(Math.min(widthScale, heightScale), 180 / 300, 340 / 300);
+      const widthScale = clamp(window.innerWidth * 0.92, 240, 400) / 300;
+      const heightScale = availH / 442; // 442 = local offset from stage top to the ring stroke's true bottom edge
+      scale = clamp(Math.min(widthScale, heightScale), 200 / 300, 400 / 300);
     } else {
       stage.style.transformOrigin = 'center center';
       const availW = Math.min(window.innerWidth - 28, 1000);
