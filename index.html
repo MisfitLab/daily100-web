@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily100 — Get 100% of every nutrient, every day</title>
+<meta name="description" content="Daily100 tracks the vitamins and minerals hiding — or missing — in every meal you eat. Log meals in seconds and see exactly what you're missing.">
+<meta property="og:title" content="Daily100 — Get 100% of every nutrient, every day">
+<meta property="og:description" content="Daily100 tracks the vitamins and minerals hiding — or missing — in every meal you eat.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/icons/appicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a id="top"></a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <img src="assets/icons/appicon.png" alt="" class="logo-icon">
+      <span>Daily<em>100</em></span>
+    </a>
+    <a href="#download" class="btn btn-dark btn-small">
+      <svg width="14" height="17" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      Download
+    </a>
+  </div>
+</header>
+
+<div id="anim-track" class="anim-track">
+  <div class="anim-sticky">
+    <div class="hero-head" id="heroHead">
+      <h1>Get 100% of every nutrient, <em>every day</em></h1>
+      <p>Daily100 tracks the vitamins and minerals hiding — or missing — in every meal you eat.</p>
+    </div>
+
+    <div class="anim-stagewrap">
+      <div class="anim-stage" id="animStage">
+        <div class="plate" id="plate">
+          <div class="plate-disc"></div>
+          <svg width="300" height="300" viewBox="0 0 300 300" class="plate-ring">
+            <circle cx="150" cy="150" r="134" fill="none" stroke="#C9F5DE" stroke-width="16"/>
+            <circle id="ringArc" cx="150" cy="150" r="134" fill="none" stroke="#10B981" stroke-width="16" stroke-linecap="round" stroke-dasharray="841.95" stroke-dashoffset="799.85" transform="rotate(-90 150 150)"/>
+          </svg>
+        </div>
+
+        <img id="icon-onion" src="assets/icons/onion.png" alt="" class="food-icon" style="left:68px;top:223px;width:66px">
+        <img id="icon-egg" src="assets/icons/egg.png" alt="" class="food-icon" style="left:229px;top:386px;width:50px">
+        <img id="icon-cup" src="assets/icons/cup.png" alt="" class="food-icon" style="left:719px;top:224px;width:48px">
+        <img id="icon-mushroom" src="assets/icons/mushroom.png" alt="" class="food-icon" style="left:874px;top:217px;width:66px">
+        <img id="icon-pineapple" src="assets/icons/pineapple.png" alt="" class="food-icon" style="left:718px;top:370px;width:52px">
+
+        <img id="icon-grid" src="assets/icons/grid.png" alt="" class="food-icon food-icon-active" style="left:228px;top:223px;width:62px">
+        <img id="icon-leaf" src="assets/icons/leaf.png" alt="" class="food-icon food-icon-active" style="left:794px;top:299px;width:56px">
+        <img id="icon-fish" src="assets/icons/fish.png" alt="" class="food-icon food-icon-active" style="left:156px;top:299px;width:64px">
+
+        <div class="checkmark" id="checkmark">
+          <div class="checkmark-inner">
+            <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12.5 10.5 18 19 7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" id="scrollCue">
+      Scroll to fill your plate
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</div>
+
+<section class="feature" id="feature-1">
+  <div class="feature-row">
+    <div class="feature-text">
+      <div class="feature-eyebrow-row">
+        <span class="feature-num">01</span>
+        <span class="feature-eyebrow">The dashboard</span>
+      </div>
+      <h2>See exactly what you're missing.</h2>
+      <p>Every meal you log fills in your daily plate. Track folate, magnesium, vitamin D, and more — no more guessing if you're actually covering the basics.</p>
+    </div>
+    <div class="feature-media">
+      <div class="feature-tile feature-tile-white">
+        <img src="assets/phones/phone-1.png" alt="Daily100 dashboard showing nutrient plate breakdown">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature feature-mint" id="feature-2">
+  <div class="feature-row feature-row-reverse">
+    <div class="feature-text">
+      <div class="feature-eyebrow-row">
+        <span class="feature-num">02</span>
+        <span class="feature-eyebrow">Fast logging</span>
+      </div>
+      <h2>Log a meal in seconds.</h2>
+      <p>Quick search or barcode scanning, no manual math. Add what you ate and Daily100 handles the nutrient breakdown instantly.</p>
+    </div>
+    <div class="feature-media">
+      <div class="feature-tile feature-tile-white">
+        <img src="assets/phones/phone-3.png" alt="Daily100 quick meal logging screen">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="feature-3">
+  <div class="feature-row">
+    <div class="feature-text">
+      <div class="feature-eyebrow-row">
+        <span class="feature-num">03</span>
+        <span class="feature-eyebrow">Food detail</span>
+      </div>
+      <h2>Know what each bite adds.</h2>
+      <p>Tap into any food to see precisely how it moves the needle — down to the percentage point, for every nutrient it contains.</p>
+    </div>
+    <div class="feature-media">
+      <div class="feature-tile feature-tile-mint">
+        <img src="assets/phones/phone-4.png" alt="Daily100 food detail screen showing nutrient percentages">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature feature-mint" id="feature-4">
+  <div class="feature-row feature-row-reverse">
+    <div class="feature-text">
+      <div class="feature-eyebrow-row">
+        <span class="feature-num">04</span>
+        <span class="feature-eyebrow">Streaks</span>
+      </div>
+      <h2>Build a streak worth keeping.</h2>
+      <p>Daily100 turns nutrient tracking into a habit, not a chore. Watch your weekly scores climb and keep the streak alive.</p>
+    </div>
+    <div class="feature-media">
+      <div class="feature-tile feature-tile-mint">
+        <img src="assets/phones/phone-5.png" alt="Daily100 streak tracking screen">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="testimonial-inner">
+    <p class="testimonial-quote">Built for the way people actually eat — a little imperfect, a little rushed, and worth paying attention to.</p>
+    <p class="testimonial-sub">No spreadsheets, no obsessing. Just a clear picture of where your nutrition stands, one meal at a time.</p>
+  </div>
+</section>
+
+<section class="cta" id="download">
+  <div class="cta-inner">
+    <h2>Your plate is telling you something. <em>Start listening.</em></h2>
+    <p>Free to start. Track any 3 nutrients — or go Pro and unlock all 24.</p>
+    <a href="#" class="btn btn-dark btn-large">
+      <svg width="18" height="22" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      Download Daily100 free
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#top" class="logo logo-footer">
+      <span>Daily<em>100</em></span>
+    </a>
+    <nav class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Support</a>
+    </nav>
+    <div class="footer-copy">&copy; 2026 Daily100</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
