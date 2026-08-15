@@ -116,6 +116,15 @@ img{max-width:100%;display:block}
   box-shadow:0 34px 60px -22px rgba(31,29,26,0.20);
 }
 .plate-ring{position:absolute;left:0;top:0;overflow:visible}
+.plate-percent{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:flex-start;
+  font-family:'Fraunces',serif;font-weight:600;
+  font-variation-settings:'SOFT' 0,'WONK' 1;
+  color:var(--ink);line-height:1;
+}
+.plate-percent #percentValue{font-size:58px}
+.plate-percent-sign{font-size:26px;margin-top:6px}
 
 .food-icon{
   position:absolute;transform:translate(-50%,-50%);

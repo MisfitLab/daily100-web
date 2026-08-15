@@ -12,7 +12,9 @@
     grid: [228, 223], leaf: [794, 299], fish: [156, 299],
   };
   // Where the three "active" icons fly to as they land on the plate.
-  const TARGET = { grid: [408, 252], leaf: [512, 296], fish: [452, 366] };
+  // Spread wider than the true center so they frame the percent counter
+  // instead of colliding with it.
+  const TARGET = { grid: [395, 240], leaf: [548, 293], fish: [449, 387] };
   // Scroll-progress window in which each active icon makes its flight.
   const FLIGHT_WINDOW = { grid: [0.04, 0.30], leaf: [0.28, 0.52], fish: [0.50, 0.74] };
   const PASSIVE_ICONS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple'];
@@ -31,6 +33,9 @@
     const arc = $('ringArc');
     const fill = clamp(0.05 + smooth(seg(p, 0.03, 0.78)) * 0.95, 0, 1);
     if (arc) arc.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - fill));
+
+    const percentValue = $('percentValue');
+    if (percentValue) percentValue.textContent = String(Math.round(fill * 100));
 
     const endFade = seg(p, 0.78, 0.88);
 
