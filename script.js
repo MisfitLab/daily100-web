@@ -5,25 +5,45 @@
   const smooth = (t) => t * t * (3 - 2 * t);
   const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 
-  // Starting positions (px within the 920x560 stage) for each food icon.
+  const MOBILE_BREAKPOINT = 720;
+  const PLATE_CX = 460, PLATE_CY = 300;
+
+  // Starting positions (px within the 920x560 stage) for each food icon -
+  // also each icon's base inline left/top, so all dx/dy below are offsets
+  // from these points regardless of device.
   const START = {
     onion: [68, 223], egg: [229, 386], cup: [719, 224],
     mushroom: [874, 217], pineapple: [718, 370],
     grid: [228, 223], leaf: [794, 299], fish: [156, 299],
   };
-  // Where the three "active" icons fly to as they land on the plate.
-  // Spread wider than the true center so they frame the percent counter
-  // instead of colliding with it.
+  // Desktop: only these three fly to the plate; the rest just drift in place.
   const TARGET = { grid: [395, 240], leaf: [548, 293], fish: [449, 387] };
-  // On narrow screens the whole 920-wide canvas scales down to fit the
-  // viewport, so the desktop START points (already inside 0-920) end up
-  // visible at rest instead of entering the frame. These push the active
-  // icons well outside the canvas so they slide in from off-screen.
-  const MOBILE_START = { grid: [-260, 240], leaf: [1180, 293], fish: [-260, 387] };
-  const MOBILE_BREAKPOINT = 720;
-  // Scroll-progress window in which each active icon makes its flight.
   const FLIGHT_WINDOW = { grid: [0.04, 0.30], leaf: [0.28, 0.52], fish: [0.50, 0.74] };
   const PASSIVE_ICONS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple'];
+
+  // Mobile: the ring is scaled up to be the focal point, which pushes most
+  // of the desktop-authored icon layout off-canvas. Rather than leave those
+  // icons stranded off-screen forever, every icon becomes "active" on
+  // mobile - entering from far off-screen and landing in a ring around the
+  // plate, staggered as the fill progresses.
+  const ALL_ICON_IDS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple', 'grid', 'leaf', 'fish'];
+  const MOBILE_TARGET = {};
+  const MOBILE_START = {};
+  const MOBILE_FLIGHT_WINDOW = {};
+  (function buildMobileLayout() {
+    const landingRadius = 112; // matches the white plate disc's own radius
+    const startRadius = 900; // clears the viewport at any angle, including near-vertical ones on tall phones
+    const startAngleDeg = -100;
+    const stepDeg = 360 / ALL_ICON_IDS.length;
+    ALL_ICON_IDS.forEach((id, i) => {
+      const rad = (startAngleDeg + i * stepDeg) * Math.PI / 180;
+      const cos = Math.cos(rad), sin = Math.sin(rad);
+      MOBILE_TARGET[id] = [PLATE_CX + landingRadius * cos, PLATE_CY + landingRadius * sin];
+      MOBILE_START[id] = [PLATE_CX + startRadius * cos, PLATE_CY + startRadius * sin];
+      const winStart = 0.03 + i * 0.065;
+      MOBILE_FLIGHT_WINDOW[id] = [winStart, winStart + 0.24];
+    });
+  })();
 
   const stage = $('animStage');
   const track = $('anim-track');
@@ -31,9 +51,34 @@
 
   const apply = (p) => {
     const wrap = stage.parentElement;
-    const availW = Math.min(window.innerWidth - 28, 1000);
-    const availH = Math.max(200, wrap.clientHeight - 76);
-    const scale = Math.min(1, availW / 920, availH / 560);
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+
+    let scale;
+    if (isMobile) {
+      // Size the ring itself, not the full desktop icon spread - it's the
+      // focal point on mobile, so let it take up most of the screen width.
+      // Anchor scaling to the top so the stage's top edge stays put as it
+      // shrinks/grows (the default center-center origin would shift the
+      // whole canvas up or down as scale changes, throwing off the height
+      // math below). wrap.clientHeight isn't reliable either - the 920x560
+      // canvas keeps its full *layout* height regardless of the visual
+      // scale, so the flex box reserves space for all 560px even when the
+      // ring renders much smaller - so measure from the wrap's actual
+      // screen position instead, and reserve room for the fixed scroll-cue
+      // pill near the bottom of the viewport.
+      stage.style.transformOrigin = 'top center';
+      const pillClearance = 130;
+      const wrapTop = wrap.getBoundingClientRect().top;
+      const availH = Math.max(140, window.innerHeight - wrapTop - pillClearance);
+      const widthScale = clamp(window.innerWidth * 0.8, 220, 340) / 300;
+      const heightScale = availH / 450; // 450 = local offset from stage top to the plate's bottom edge
+      scale = clamp(Math.min(widthScale, heightScale), 180 / 300, 340 / 300);
+    } else {
+      stage.style.transformOrigin = 'center center';
+      const availW = Math.min(window.innerWidth - 28, 1000);
+      const availH = Math.max(200, wrap.clientHeight - 76);
+      scale = Math.min(1, availW / 920, availH / 560);
+    }
     stage.style.transform = `scale(${scale})`;
 
     const arc = $('ringArc');
@@ -44,18 +89,19 @@
     if (percentValue) percentValue.textContent = String(Math.round(fill * 100));
 
     const endFade = seg(p, 0.78, 0.88);
-    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    const activeIds = isMobile ? ALL_ICON_IDS : Object.keys(TARGET);
 
-    for (const id of Object.keys(TARGET)) {
+    for (const id of activeIds) {
       const el = $('icon-' + id);
       if (!el) continue;
-      // dx/dy are offsets from the icon's base (inline left/top, always the
-      // desktop START), so a mobile "from" point must be expressed relative
-      // to that same base rather than as an absolute replacement for it.
+      const target = isMobile ? MOBILE_TARGET[id] : TARGET[id];
       const from = isMobile ? MOBILE_START[id] : START[id];
-      const t = smooth(seg(p, FLIGHT_WINDOW[id][0], FLIGHT_WINDOW[id][1]));
-      const curX = from[0] + (TARGET[id][0] - from[0]) * t;
-      const curY = from[1] + (TARGET[id][1] - from[1]) * t;
+      const win = isMobile ? MOBILE_FLIGHT_WINDOW[id] : FLIGHT_WINDOW[id];
+      const t = smooth(seg(p, win[0], win[1]));
+      const curX = from[0] + (target[0] - from[0]) * t;
+      const curY = from[1] + (target[1] - from[1]) * t;
+      // dx/dy are relative to the icon's base inline position, which is
+      // always the desktop START point regardless of device.
       const dx = curX - START[id][0];
       const dy = curY - START[id][1];
       const sc = 1 - 0.35 * endFade;
@@ -63,15 +109,17 @@
       el.style.opacity = String(1 - endFade);
     }
 
-    for (const id of PASSIVE_ICONS) {
-      const el = $('icon-' + id);
-      if (!el) continue;
-      const [sx, sy] = START[id];
-      const ux = sx - 460, uy = sy - 300;
-      const len = Math.hypot(ux, uy) || 1;
-      const drift = 30 * p;
-      el.style.transform = `translate(-50%,-50%) translate(${(ux / len) * drift}px,${(uy / len) * drift}px)`;
-      el.style.opacity = String(1 - endFade);
+    if (!isMobile) {
+      for (const id of PASSIVE_ICONS) {
+        const el = $('icon-' + id);
+        if (!el) continue;
+        const [sx, sy] = START[id];
+        const ux = sx - PLATE_CX, uy = sy - PLATE_CY;
+        const len = Math.hypot(ux, uy) || 1;
+        const drift = 30 * p;
+        el.style.transform = `translate(-50%,-50%) translate(${(ux / len) * drift}px,${(uy / len) * drift}px)`;
+        el.style.opacity = String(1 - endFade);
+      }
     }
 
     const plate = $('plate');
