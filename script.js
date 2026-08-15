@@ -15,6 +15,12 @@
   // Spread wider than the true center so they frame the percent counter
   // instead of colliding with it.
   const TARGET = { grid: [395, 240], leaf: [548, 293], fish: [449, 387] };
+  // On narrow screens the whole 920-wide canvas scales down to fit the
+  // viewport, so the desktop START points (already inside 0-920) end up
+  // visible at rest instead of entering the frame. These push the active
+  // icons well outside the canvas so they slide in from off-screen.
+  const MOBILE_START = { grid: [-260, 240], leaf: [1180, 293], fish: [-260, 387] };
+  const MOBILE_BREAKPOINT = 720;
   // Scroll-progress window in which each active icon makes its flight.
   const FLIGHT_WINDOW = { grid: [0.04, 0.30], leaf: [0.28, 0.52], fish: [0.50, 0.74] };
   const PASSIVE_ICONS = ['onion', 'egg', 'cup', 'mushroom', 'pineapple'];
@@ -38,13 +44,20 @@
     if (percentValue) percentValue.textContent = String(Math.round(fill * 100));
 
     const endFade = seg(p, 0.78, 0.88);
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
 
     for (const id of Object.keys(TARGET)) {
       const el = $('icon-' + id);
       if (!el) continue;
+      // dx/dy are offsets from the icon's base (inline left/top, always the
+      // desktop START), so a mobile "from" point must be expressed relative
+      // to that same base rather than as an absolute replacement for it.
+      const from = isMobile ? MOBILE_START[id] : START[id];
       const t = smooth(seg(p, FLIGHT_WINDOW[id][0], FLIGHT_WINDOW[id][1]));
-      const dx = (TARGET[id][0] - START[id][0]) * t;
-      const dy = (TARGET[id][1] - START[id][1]) * t;
+      const curX = from[0] + (TARGET[id][0] - from[0]) * t;
+      const curY = from[1] + (TARGET[id][1] - from[1]) * t;
+      const dx = curX - START[id][0];
+      const dy = curY - START[id][1];
       const sc = 1 - 0.35 * endFade;
       el.style.transform = `translate(-50%,-50%) translate(${dx}px,${dy}px) scale(${sc})`;
       el.style.opacity = String(1 - endFade);
