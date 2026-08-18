@@ -177,3 +177,29 @@
   window.addEventListener('resize', onScroll);
   tick();
 })();
+
+// Feature section slide-in-from-the-side reveal. Independent of the hero's
+// scroll loop above - a one-time IntersectionObserver trigger per element
+// is the right tool here, not another continuous scroll handler.
+(function () {
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  revealEls.forEach((el) => io.observe(el));
+})();

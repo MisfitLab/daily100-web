@@ -83,6 +83,20 @@ img{max-width:100%;display:block}
   max-width:900px;margin:0 auto;
   will-change:transform,opacity;
 }
+/* Separate from .hero-head itself, which the scroll JS already drives via
+   inline transform/opacity every frame - animating the same property on
+   the same element here would fight that (an actively-animating CSS
+   property loses to an inline style set on the same element). */
+.hero-head-intro{
+  animation:heroIntroDrop 0.9s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes heroIntroDrop{
+  from{opacity:0;transform:translateY(-22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-head-intro{animation:none}
+}
 .hero-head h1{
   font-weight:600;
   font-size:clamp(40px,6.6vw,88px);
@@ -184,6 +198,21 @@ img{max-width:100%;display:block}
 .feature-media{flex:1 1 300px;display:flex;justify-content:center}
 .feature-phone{
   width:clamp(220px,25vw,320px);
+}
+
+/* Slide-in-from-the-side reveal, triggered once per element by an
+   IntersectionObserver in script.js as each scrolls into view. */
+.reveal{
+  opacity:0;
+  transition:transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.8s ease-out;
+  will-change:transform,opacity;
+}
+.reveal-left{transform:translateX(-32px)}
+.reveal-right{transform:translateX(32px)}
+.reveal.is-visible{opacity:1;transform:translateX(0)}
+.feature-media.reveal{transition-delay:0.12s}
+@media (prefers-reduced-motion:reduce){
+  .reveal{transition:none;opacity:1;transform:none}
 }
 
 /* Testimonial */
