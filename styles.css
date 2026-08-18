@@ -88,7 +88,7 @@ img{max-width:100%;display:block}
    the same element here would fight that (an actively-animating CSS
    property loses to an inline style set on the same element). */
 .hero-head-intro{
-  animation:heroIntroDrop 0.9s cubic-bezier(0.16,1,0.3,1) both;
+  animation:heroIntroDrop 1.5s cubic-bezier(0.16,1,0.3,1) both;
 }
 @keyframes heroIntroDrop{
   from{opacity:0;transform:translateY(-22px)}
